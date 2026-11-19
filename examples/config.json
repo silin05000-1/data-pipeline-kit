@@ -1,0 +1,48 @@
+{
+  "name": "demo orders",
+  "log_level": "INFO",
+  "sources": [
+    {"name": "orders", "type": "csv", "path": "examples/input.csv"}
+  ],
+  "clean": {
+    "normalize_headers": true,
+    "strip_whitespace": true,
+    "drop_empty_rows": true,
+    "drop_duplicates": ["order_id"],
+    "cast": {
+      "order_id": "int",
+      "amount": "float",
+      "created_at": "date"
+    },
+    "fill": {
+      "amount": 0
+    },
+    "filters": [
+      {"field": "status", "op": "ne", "value": "cancelled"}
+    ]
+  },
+  "validate": {
+    "required": ["order_id", "status"],
+    "unique": ["order_id"],
+    "min_rows": 1
+  },
+  "transform": {
+    "group_by": {
+      "by": ["status"],
+      "aggs": {"amount": "sum", "order_id": "count"}
+    }
+  },
+  "output": {
+    "path": "out/result.csv",
+    "format": "csv"
+  },
+  "api": {
+    "enabled": false
+  },
+  "notify": {
+    "on": ["success", "failure"],
+    "telegram": {"enabled": false},
+    "slack": {"enabled": false},
+    "email": {"enabled": false}
+  }
+}
