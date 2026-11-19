@@ -25,8 +25,10 @@
 
 ## Быстрый старт
 
+Репозиторий: [https://github.com/silin05000-1/data-pipeline-kit.git](https://github.com/silin05000-1/data-pipeline-kit.git)
+
 ```bash
-git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
+git clone https://github.com/silin05000-1/data-pipeline-kit.git
 cd data-pipeline-kit
 
 python3 -m venv .venv
