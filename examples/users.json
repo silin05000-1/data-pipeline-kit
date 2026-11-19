@@ -1,0 +1,8 @@
+[
+  {"order_id": 1, "manager": "Alice"},
+  {"order_id": 2, "manager": "Bob"},
+  {"order_id": 3, "manager": "Alice"},
+  {"order_id": 4, "manager": "Carol"},
+  {"order_id": 5, "manager": "Bob"},
+  {"order_id": 6, "manager": "Carol"}
+]
