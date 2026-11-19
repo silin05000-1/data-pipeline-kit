@@ -1,0 +1,60 @@
+{
+  "name": "orders -> REST API + notifications",
+  "sources": [
+    {"name": "orders", "type": "csv", "path": "examples/input.csv"},
+    {"name": "managers", "type": "json", "path": "examples/users.json", "root": null}
+  ],
+  "merge": {
+    "on": "order_id",
+    "how": "left"
+  },
+  "clean": {
+    "drop_duplicates": ["order_id"],
+    "cast": {"order_id": "int", "amount": "float", "created_at": "date"},
+    "fill": {"amount": 0},
+    "filters": [
+      {"field": "status", "op": "ne", "value": "cancelled"}
+    ]
+  },
+  "validate": {
+    "required": ["order_id", "status"],
+    "unique": ["order_id"]
+  },
+  "output": {
+    "path": "out/result.json",
+    "format": "json"
+  },
+  "api": {
+    "enabled": true,
+    "method": "POST",
+    "url": "${API_URL:-https://httpbin.org/post}",
+    "auth": {"type": "bearer", "token_env": "API_TOKEN"},
+    "payload_key": "rows",
+    "include_meta": true,
+    "timeout": 20,
+    "retry": {"attempts": 3, "backoff": 1.0},
+    "expect_status": [200, 201, 202, 204]
+  },
+  "notify": {
+    "on": ["success", "failure"],
+    "telegram": {
+      "enabled": true,
+      "bot_token_env": "TELEGRAM_BOT_TOKEN",
+      "chat_id_env": "TELEGRAM_CHAT_ID"
+    },
+    "slack": {
+      "enabled": true,
+      "webhook_url_env": "SLACK_WEBHOOK_URL"
+    },
+    "email": {
+      "enabled": false,
+      "host": "smtp.example.com",
+      "port": 587,
+      "use_tls": true,
+      "from": "pipeline@example.com",
+      "to": ["ops@example.com"],
+      "username_env": "SMTP_USER",
+      "password_env": "SMTP_PASSWORD"
+    }
+  }
+}
