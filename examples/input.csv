@@ -1,0 +1,8 @@
+order_id,amount,status,created_at,email
+1,100.50,paid,2026-01-05,user1@example.com
+2,200,pending,2026-01-06,user2@example.com
+3,,paid,2026-01-07,user3@example.com
+4,300,paid,2026-01-08,user4@example.com
+4,300,paid,2026-01-08,user4@example.com
+5,50,cancelled,2026-01-09,user5@example.com
+6,420,paid,2026-01-10,user6@example.com
